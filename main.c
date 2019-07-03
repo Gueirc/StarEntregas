@@ -8,7 +8,7 @@
 int main(){
     
     plan ** grafo = malloc(sizeof**grafo * QPLANETAS); // Inicia o vetor da lista de adjacência
-    int i,j; // Auxiliares pro for
+    int i; // Auxiliar pro for
     for (i = 0; i < QPLANETAS; i += 1){ // Inicia cada um dos planetas
         grafo[i] = grafo_inicia(i);
     } 
@@ -82,6 +82,7 @@ int main(){
     free(iCusto);
     free(gfAnterior);
     // ---------------------------------------------------------- //
+    return 0;
 }
 
 plan * grafo_inicia(int gfIndice){
