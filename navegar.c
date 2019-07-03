@@ -35,7 +35,8 @@ void nav_viajePara (plan ** grafo, int gfAtual, int * tempo, int gfDestino){
 
 }
 
-int * nav_vertices (plan ** grafo, int * distancias, int * expressao, int * menorCaminho, int menorCaminhoValor, int numero){
+int ** nav_vertices (plan ** grafo, int * distancias, int * expressao, int ** menorCaminho, int numero){
+    // pelo que eu entendi numero eh a quantidade de planetas ja passados por
     int soma;
     if(numero >= QPLANETAS){
         soma = 0;
@@ -45,17 +46,18 @@ int * nav_vertices (plan ** grafo, int * distancias, int * expressao, int * meno
         }
 
         soma += dijkstra_pesototal(grafo, expressao[QPLANETAS-1], expressao[0]); 
-        if(menorCaminhoValor > soma || menorCaminho == NULL){
-            menorCaminho = expressao;
-            menorCaminhoValor = soma;
+        if(menorCaminho[1][0] > soma || menorCaminho[0] == NULL){
+            menorCaminho[0] = expressao;
+            menorCaminho[1][0] = soma;
         }
     }else{
         int i;
+        
         for(i = 0; i < QPLANETAS; i += 1){
             if(numero >= distancias[i]){  // Como assim distancias[i]
                 if(!estaContido(i, expressao, numero)){
                     expressao[numero] = i;
-                    menorCaminho = nav_vertices(grafo, distancias, expressao, menorCaminho, menorCaminhoValor, ++numero);
+                    menorCaminho = nav_vertices(grafo, distancias, expressao, menorCaminho, ++numero);
 
                 }
 

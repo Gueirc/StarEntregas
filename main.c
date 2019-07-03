@@ -71,8 +71,21 @@ int main(){
     printf("\n Dijkstra menor distancia entre pos 0 e 2: %d",dijkstra_pesototal(grafo,0,2));
     printf("\n Dijkstra proximo vertice do menor caminho origem 0 e destino 2: %d",dijkstra_proximo(grafo,0,2));
     printf("\n");
-
+    printf("\n");
+    printf("\n");
     // --------------------------------------------------- //
+    // Calcula o caminho
+    int ** menorCaminho = malloc(sizeof**menorCaminho * 2);
+    menorCaminho[0] = malloc(sizeof*menorCaminho * QPLANETAS);
+    menorCaminho[0] = NULL;
+    menorCaminho[1] = malloc(sizeof*menorCaminho);
+    menorCaminho[1][0] = 99999;
+    int * expressao = malloc(sizeof*expressao* QPLANETAS);
+    int * distancias = calloc(QPLANETAS, sizeof*distancias); // N sei pra que q serve isso
+    nav_vertices (grafo, distancias, expressao, menorCaminho, 0);
+    for (i = 0; i < QPLANETAS; i += 1){
+        printf("%d ",menorCaminho[0][i]);
+    }
 
     // ------------ Libera o grafo e as listas ----------------------------- //
     for (i = 0; i < QPLANETAS; i += 1){
