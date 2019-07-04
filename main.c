@@ -81,7 +81,7 @@ int main(){
     menorCaminho[1] = malloc(sizeof*menorCaminho);
     menorCaminho[1][0] = 99999;
     int * expressao = malloc(sizeof*expressao* QPLANETAS);
-    int * distancias = calloc(QPLANETAS, sizeof*distancias); // N sei pra que q serve isso
+    int * distancias = dijkstra_distancias(grafo, 0);
     nav_vertices (grafo, distancias, expressao, menorCaminho, 0);
     for (i = 0; i < QPLANETAS; i += 1){
         printf("%d ",menorCaminho[0][i]);

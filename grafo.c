@@ -152,6 +152,34 @@ int dijkstra_proximo(plan ** grafo, int origem, int destino){
     return x;
 
 }
+int * dijkstra_distancias(plan ** grafo, int origem){
+    int * iCusto = malloc(sizeof*iCusto * QPLANETAS);
+    int * gfAnterior = malloc(sizeof*gfAnterior * QPLANETAS);
+    grafo_dijkstra(grafo, origem, iCusto, gfAnterior);
+    int * distancias = malloc(sizeof*distancias * QPLANETAS);
+    int x;
+    int cont;
+    int i;
+    for (i = 0; i < QPLANETAS; i+= 1){
+        cont = 0;
+        x = i;
+        if (i != origem){
+            cont += 1;
+            while (gfAnterior[x] != 0){
+                cont += 1;
+                x = gfAnterior[x];
+            }
+        }
+        distancias[i] = cont;
+
+    }
+
+    free(iCusto);
+    free(gfAnterior);
+    return distancias;
+
+
+}
 
 
 
