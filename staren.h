@@ -1,7 +1,7 @@
 #ifndef STAREN_H
 #define STAREN_H
 
-#define QPLANETAS 13
+#define QPLANETAS 14
 
 typedef struct planeta{
     int gfIndice;
@@ -19,6 +19,6 @@ int dijkstra_pesototal(plan ** grafo, int origem, int destino);
 int dijkstra_proximo(plan ** grafo, int origem, int destino);
 int * dijkstra_distancias(plan ** grafo, int origem);
 void nav_viajePara (plan ** grafo, int gfAtual, int * tempo, int gfDestino);
-int ** nav_vertices (plan ** grafo, int * distancias, int * expressao, int ** menorCaminho, int numero);
+void nav_vertices (plan ** grafo, int * distancias, int * expressao, int ** menorCaminho, int numero);
 
 #endif

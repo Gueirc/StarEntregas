@@ -15,10 +15,21 @@ int main(){
     // Criação de grafo arbitrário nao direcionado ( Grafo exemplar)
     // ------------------------------------------------------ //
     //grafo_insere_duplo(grafo, 0, 1, 2, 0);
-    //grafo_insere_duplo(grafo, 0, 2, 5, 0);
-    //grafo_insere_duplo(grafo, 1, 2, 2, 0);
-    //grafo_insere_duplo(grafo, 2, 3, 5, 0);
-    //grafo_insere_duplo(grafo, 3, 0, 1, 0);
+    //grafo_insere_duplo(grafo, 0, 2, 10, 0);
+    //grafo_insere_duplo(grafo, 0, 8, 11, 0);
+    //grafo_insere_duplo(grafo, 0, 7, 7, 0);
+    //grafo_insere_duplo(grafo, 1, 2, 6, 0);
+    //grafo_insere_duplo(grafo, 2, 3, 4, 0);
+    //grafo_insere_duplo(grafo, 2, 8, 4, 0);
+    //grafo_insere_duplo(grafo, 3, 4, 2, 0);
+    //grafo_insere_duplo(grafo, 3, 5, 3, 0);
+    //grafo_insere_duplo(grafo, 4, 5, 4, 0);
+    //grafo_insere_duplo(grafo, 4, 7, 3, 0);
+    //grafo_insere_duplo(grafo, 4, 6, 5, 0);
+    //grafo_insere_duplo(grafo, 5, 6, 1, 0);
+    //grafo_insere_duplo(grafo, 6, 7, 4, 0);
+    //grafo_insere_duplo(grafo, 7, 8, 3, 0);
+
 
     // Grafo do computerphile 
     grafo_insere_duplo(grafo, 0, 1, 3, 0);
@@ -39,6 +50,9 @@ int main(){
     grafo_insere_duplo(grafo, 9, 11, 2, 0);
     grafo_insere_duplo(grafo, 10, 12, 5, 0);
     grafo_insere_duplo(grafo, 11, 12, 2, 0);
+    grafo_insere_duplo(grafo, 13, 8, 4, 0);
+    grafo_insere_duplo(grafo, 13, 9, 3, 0);
+    grafo_insere_duplo(grafo, 13, 12, 6, 0);
 
     // ------------------------------------------------------ //
 
@@ -77,15 +91,22 @@ int main(){
     // Calcula o caminho
     int ** menorCaminho = malloc(sizeof**menorCaminho * 2);
     menorCaminho[0] = malloc(sizeof*menorCaminho * QPLANETAS);
-    menorCaminho[0] = NULL;
     menorCaminho[1] = malloc(sizeof*menorCaminho);
     menorCaminho[1][0] = 99999;
-    int * expressao = malloc(sizeof*expressao* QPLANETAS);
+    int * expressao = malloc(sizeof*expressao * QPLANETAS);
+    for (i = 0; i < QPLANETAS; i += 1){
+        expressao[i] = QPLANETAS;
+    }
+    for (i = 0; i < QPLANETAS; i += 1){
+        menorCaminho[0][i] = QPLANETAS;
+    }
     int * distancias = dijkstra_distancias(grafo, 0);
     nav_vertices (grafo, distancias, expressao, menorCaminho, 0);
     for (i = 0; i < QPLANETAS; i += 1){
         printf("%d ",menorCaminho[0][i]);
+
     }
+    printf("\n Soma total: %d \n",menorCaminho[1][0]);
 
     // ------------ Libera o grafo e as listas ----------------------------- //
     for (i = 0; i < QPLANETAS; i += 1){
