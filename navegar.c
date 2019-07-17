@@ -36,7 +36,7 @@ void nav_viajePara (plan ** grafo, int gfAtual, int * tempo, int gfDestino){
 
 }
 
-int podeSerColocado(int i, int numero, int * distancias, int * expressao){
+static int podeSerColocado(int i, int numero, int * distancias, int * expressao){
 	if(numero < distancias[i]){
 		return 0;
 	}
@@ -48,18 +48,19 @@ int podeSerColocado(int i, int numero, int * distancias, int * expressao){
 }
 
 
-int * transfereVetor(int * origem, int * destino){
-	for(int i=0; i<QPLANETAS; i++){
+static int * transfereVetor(int * origem, int * destino){
+    int i;
+	for(i = 0; i<QPLANETAS; i++){
 		destino[i]=origem[i];
 	}
 	return destino;
 }
 
 
-int somaCaminho(plan ** grafo, int * expressao){
+static int somaCaminho(plan ** grafo, int * expressao){
 	int som = 0;
-	
-	for(int i = 0; i + 1 < QPLANETAS; i += 1){
+	int i;
+	for(i = 0; i + 1 < QPLANETAS; i += 1){
 		som += dijkstra_pesototal(grafo, expressao[i], expressao[i+1]);
 	}
 

@@ -2,7 +2,17 @@
 #include<stdlib.h>
 #include"staren.h"
 
-void grafo_insere(plan * aInserir, int gfIndice, int iTempo, int bEmGuerra){
+plan * grafo_inicia(int gfIndice, int tGuerIni, int iDura){
+    plan * aIniciar = malloc(sizeof*aIniciar);
+    aIniciar->gfIndice = gfIndice;
+    aIniciar->iTempo = 1; // Ir de um planeta para o mesmo significa esperar uma hora nele, embora isso nunca seja usado
+    aIniciar->tGuerIni = tGuerIni;
+    aIniciar->iDura = iDura;
+    aIniciar->prox = NULL;
+    return aIniciar;
+}
+
+void grafo_insere(plan * aInserir, int gfIndice, int iTempo, int tGuerIni, int iDura){
     plan * aux = aInserir;
     while(aux->prox != NULL){
         aux = aux->prox;
@@ -10,25 +20,27 @@ void grafo_insere(plan * aInserir, int gfIndice, int iTempo, int bEmGuerra){
     plan * novo = malloc(sizeof*novo);
     aux->prox = novo;
     novo->iTempo = iTempo;
-    novo->bEmGuerra = bEmGuerra;
+    novo->tGuerIni = tGuerIni;
+    novo->iDura = iDura;
     novo->gfIndice = gfIndice;
     novo->prox = NULL;
 
 }
 
-void grafo_insere_duplo(plan ** grafo, int prim, int sec, int iTempo, int bEmGuerra){
+void grafo_insere_duplo(plan ** grafo, int prim, int sec, int iTempo){
     plan * aInserir = grafo[prim];
 
     plan * aux = aInserir;
     while(aux->prox != NULL){
         aux = aux->prox;
     }
-    plan * novo = malloc(sizeof * novo);
+    plan * novo = malloc(sizeof*novo);
     aux->prox = novo; 
     novo->iTempo = iTempo;
-    novo->bEmGuerra = grafo[sec]->bEmGuerra;
     novo->gfIndice = sec; // Conexão do primário pro segundário
     novo->prox = NULL;
+    novo->tGuerIni = grafo[sec]->tGuerIni;
+    novo->iDura = grafo[sec]->iDura;
 
 
     plan * aInserirSec = grafo[sec];
@@ -36,12 +48,13 @@ void grafo_insere_duplo(plan ** grafo, int prim, int sec, int iTempo, int bEmGue
     while(aux->prox != NULL){
         aux = aux->prox;
     }
-    plan * novoSec = malloc(sizeof * novoSec);
+    plan * novoSec = malloc(sizeof*novoSec);
     aux->prox = novoSec;
     novoSec->iTempo = iTempo;
-    novoSec->bEmGuerra = grafo[prim]->bEmGuerra;
     novoSec->gfIndice = prim; // Conexão do secundario pro primário
     novoSec->prox = NULL;
+    novoSec->tGuerIni = grafo[prim]->tGuerIni;
+    novoSec->iDura = grafo[prim]->iDura;
 }
 
 void grafo_libera(plan * grafo){
@@ -87,10 +100,22 @@ void grafo_dijkstra(plan ** grafo, int gfInicio, int * iCusto, int * gfAnterior)
 
 
         plan * aux = grafo[gfAtual];
-        aux = aux->prox; // Coloca no primeiro próximo gráfico de uma vez, talvez tenha que mudar isso pra fazer contar pode esperar
+        aux = aux->prox; // Coloca no primeiro próximo gráfico de uma vez, 
         int bJaVisitou; // Booleana se uma vertice adjacente ja foi vistada
         int bEstaLista; // Booleana se um vertice já está na lista
         while (aux != NULL){ // Enquanto tiver vertices adjacentes
+
+            // Tempo
+            int iDuraGuerra = 0; // Tempo que dura a gurra do atual para o proximo a ser testado
+            if (aux->tGuerIni != -1){ // Se for -1 n tem guerra
+                // Ve se o tempo pra chegar no aux (proximo) a partir do atual esta dentro do tempo de guerra do proximo
+                if (iCusto[gfAtual] > aux->tGuerIni - aux->iTempo){
+                    if(iCusto[gfAtual] < aux->iDura + aux->tGuerIni){
+                        iDuraGuerra = aux->tGuerIni + aux->iDura - iCusto[gfAtual];
+                    }
+                }
+            }
+
             bJaVisitou = 0;
             for (i = 0; i < gfVisitadosTam; i += 1){ // Procura nos vertices ja visitados pelo atual
                 if (aux->gfIndice == gfVisitados[i]){
@@ -102,8 +127,8 @@ void grafo_dijkstra(plan ** grafo, int gfInicio, int * iCusto, int * gfAnterior)
                 for (i = 0; i < gfMenorCaminhoTam; i += 1){ // Se for um dos grafos que esta na lista
                     if (aux->gfIndice == gfMenorCaminho[i]){ // Se sim existe outro caminho e testamos qual o menor
                         bEstaLista = 1;
-                        if (iCusto[gfAtual] + aux->iTempo < iCusto[gfMenorCaminho[i]]){ // Se sim o que acabamos de descobrir eh menor
-                            iCusto[gfMenorCaminho[i]] = iCusto[gfAtual] + aux->iTempo; // O novo menor eh esse
+                        if (iCusto[gfAtual] + aux->iTempo + iDuraGuerra < iCusto[gfMenorCaminho[i]]){ // Se sim o que acabamos de descobrir eh menor
+                            iCusto[gfMenorCaminho[i]] = iCusto[gfAtual] + aux->iTempo + iDuraGuerra; // O novo menor eh esse
                             gfAnterior[gfMenorCaminho[i]] = gfAtual; // O anterior ao desse outro caminho eh o atual
                         }
                         break; // so precisa percorrer ate achar, achou, sai
@@ -114,6 +139,7 @@ void grafo_dijkstra(plan ** grafo, int gfInicio, int * iCusto, int * gfAnterior)
                     gfMenorCaminho[gfMenorCaminhoTam] = aux->gfIndice;
                     gfMenorCaminhoTam += 1;
                     iCusto[aux->gfIndice] = aux->iTempo + iCusto[gfAtual]; // O custo do atual eh o custo do atual (o mais curto ate agr) e o caminho
+                    iCusto[aux->gfIndice] += iDuraGuerra;
                     gfAnterior[aux->gfIndice] = gfAtual;
                 }
 
