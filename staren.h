@@ -1,7 +1,7 @@
 #ifndef STAREN_H
 #define STAREN_H
 
-#define QPLANETAS 4
+#define QPLANETAS 8 
 
 typedef struct planeta{
     int gfIndice;
@@ -43,5 +43,5 @@ void nav_viajePara (plan ** grafo, int gfAtual, int * tempo, int gfDestino);
 // por meio de menorCaminho[0] o vetor com a ordem a ser seguida,
 // e em menorCaminho[1][0] o tempo total desse caminho
 void nav_vertices (plan ** grafo, int * distancias, int * expressao, int ** menorCaminho, int numero);
-
+void printaCaminhoInteiro(int **menorCaminho, plan **grafo);
 #endif

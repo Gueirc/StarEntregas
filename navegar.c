@@ -2,6 +2,27 @@
 #include<stdio.h>
 #include"staren.h"
 
+void printaCaminhoInteiro(int **menorCaminho, plan **grafo){
+	int posicao = menorCaminho[0][0];
+	printf("%i ", posicao);
+	for(int i=0; i<QPLANETAS; i++){
+		if(i==QPLANETAS-1){
+			while(posicao != menorCaminho[0][0]){
+				posicao = dijkstra_proximo(grafo, posicao, menorCaminho[0][0]);
+				printf("%i ", posicao);
+			}
+		
+		}else{
+			while(posicao != menorCaminho[0][i+1]){
+				posicao = dijkstra_proximo(grafo, posicao, menorCaminho[0][i+1]);
+				printf("%i ", posicao);
+			}
+		}
+	}
+	printf("\n");
+
+}
+
 static int estaContido (int procurado, int *vetor, int ateOndeProcurar){
     int i;
 	for(i = 0; i < ateOndeProcurar; i += 1){
