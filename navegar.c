@@ -2,10 +2,11 @@
 #include<stdio.h>
 #include"staren.h"
 
-void printaCaminhoInteiro(int **menorCaminho, plan **grafo){
+void printaCaminhoInteiro(int ** menorCaminho, plan ** grafo){
 	int posicao = menorCaminho[0][0];
 	printf("%i ", posicao);
-	for(int i=0; i<QPLANETAS; i++){
+  int i;
+	for(i=0; i<QPLANETAS; i++){
 		if(i==QPLANETAS-1){
 			while(posicao != menorCaminho[0][0]){
 				posicao = dijkstra_proximo(grafo, posicao, menorCaminho[0][0]);
@@ -49,7 +50,6 @@ void nav_viajePara (plan ** grafo, int gfAtual, int * tempo, int gfDestino){
         tempo++;
     }
 
-    //situacaografo=atualizeSituacao(situacaoPlanetas);
 
     if(gfAtual != gfDestino){
         nav_viajePara(grafo, gfAtual, tempo, gfDestino);
@@ -98,7 +98,6 @@ void nav_vertices (plan ** grafo, int * distancias, int * expressao, int ** meno
     if(numero >= QPLANETAS){ //se a expressao ja esta pronta compara com o atual menorCaminho
 		
         soma = somaCaminho(grafo, expressao);
-        int z;
 		if(soma <= menorCaminho[1][0]){
 			menorCaminho[0] = transfereVetor(expressao, menorCaminho[0]);
 			menorCaminho[1][0] = soma;
