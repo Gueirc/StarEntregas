@@ -7,6 +7,7 @@ Somos uma empresa de entrega de clones que tem de entregar, passar, por vários 
 ### Como
 Resolvemos o problema usando o algoritimo de diijkstra, com um grafo de lista de adjacências. Para decidir o caminho testamos todas as possilidades, excluindo manualmente casos claramente inviáveis para melhorar a perfomance/tempo, e escolhemos o sequência de vértice que têm, no total, o menor tempo.
 
-
+### Quem
+Alunos do segundo ano do Coltec, para trabalho escolar.
 
 
